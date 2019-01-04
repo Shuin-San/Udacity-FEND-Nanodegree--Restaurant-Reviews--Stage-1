@@ -43,10 +43,13 @@ self.addEventListener('fetch', function(e) {
             return response;
         } else {
             console.log('fetching');
+            
             return fetch(e.request)
             .then(function(response) {
+                // fix Response body error
+                const copyResponse = response.clone();
                 caches.open('1.0').then(function(cache) {
-                    cache.put(e.request, response);
+                    cache.put(e.request, copyResponse);
                 })
                 return response;
             })
